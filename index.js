@@ -5,7 +5,7 @@ var webpackDevMiddleware = require('webpack-dev-middleware');
 var app = express();
 var config = require('./webpack.config.babel.js');
 var compiler = webpack(config);
-var PORT = 3002;
+var PORT = 3001;
 
 app.use(webpackDevMiddleware(compiler))
 

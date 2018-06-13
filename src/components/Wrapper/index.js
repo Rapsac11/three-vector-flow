@@ -1,10 +1,45 @@
 import React, { Component } from 'react';
 import styled from 'react-emotion';
-import ReactThreeRenderer from '../ReactThreeRenderer'
-import ThreeWrapper from '../ThreeWrapper'
+import threeRootComponent from '../ThreeRootComponent'
+import { loadObj } from '../../actions.js'
+import LayerButton from '../LayerButton'
 
 class Wrapper extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      modelData: {
+        obj: 'https://s3-ap-southeast-2.amazonaws.com/three.json.zonemodel/internalheatloads.obj',
+        vector: 'https://s3-ap-southeast-2.amazonaws.com/three.json.zonemodel/VectorFlow.json'
+      },
+      layers: null
+    }
+  }
 
+  componentDidMount() {
+      Promise.all(
+          [
+            fetch(this.state.modelData.vector).then(r => r.json()),
+            loadObj(this.state.modelData.obj)
+          ]
+        )
+        .then(
+          //for some reason calling this.setState after threeRootComponent() will prevent canvas from rendering hence the chained promise
+          ([vectorData, objModel]) => {
+            this.setState({
+              layers: [...objModel.children]
+            })
+            console.log(objModel)
+            return [vectorData, objModel]
+          }
+        )
+        .then(
+          ([vectorData, objModel]) => {
+            threeRootComponent(this.threeRootElement, objModel, vectorData, this.state.layers)
+          }
+        )
+      .catch(e => console.error(e));
+  }
 
   render() {
 
@@ -27,10 +62,21 @@ class Wrapper extends Component {
         }
     `
 
+    const rootStyle = {
+      height: "400px"
+    }
+
     return (
-      <div>
-      <Container>
-      <ThreeWrapper />
+      <div style={rootStyle}>
+      <Container style={rootStyle}>
+      <div style={rootStyle} ref={element => this.threeRootElement = element} />
+      <div id="buttonBar">
+      {
+        this.state.layers ? this.state.layers.map(entry => {
+          return <LayerButton id={entry.name} key={entry.name} data={entry} />
+        }) : null
+      }
+      </div>
       </Container>
       </div>
     );
