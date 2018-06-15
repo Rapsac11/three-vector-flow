@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import VectorFlow from '../VectorFlow';
 import BuildingModel from '../BuildingModel'
+import Pressure from '../Pressure'
+import OrbitControls from 'three-orbitcontrols'
 
-import { OrbitControls, loadModelLocally } from 'react-three-model-loader'
-
-export default (canvas, objModel, vectorData) => {
+export default (canvas, objModel, vectorData, pressureData) => {
 
     const clock = new THREE.Clock();
     const origin = new THREE.Vector3(0,0,0);
@@ -22,7 +22,7 @@ export default (canvas, objModel, vectorData) => {
     const scene = buildScene();
     const renderer = buildRender(screenDimensions);
     const camera = buildCamera(screenDimensions);
-    const sceneSubjects = createSceneSubjects(scene, objModel, vectorData);
+    const sceneSubjects = createSceneSubjects(scene, objModel, vectorData, pressureData);
 
     function buildScene() {
         const scene = new THREE.Scene();
@@ -52,11 +52,12 @@ export default (canvas, objModel, vectorData) => {
         return camera;
     }
 
-    function createSceneSubjects(scene, objModel, vectorData) {
+    function createSceneSubjects(scene, objModel, vectorData, pressureData) {
         const sceneSubjects = [
           {
             'VectorFlow': new VectorFlow(scene, vectorData),
             'BuildingModel': new BuildingModel(scene, objModel),
+            'Pressure': new Pressure(scene, pressureData)
           },
         ];
 
@@ -67,8 +68,8 @@ export default (canvas, objModel, vectorData) => {
         const elapsedTime = clock.getElapsedTime();
 
         for(let i=0; i<sceneSubjects.length; i++)
-            Object.values(sceneSubjects[0])[i].update(elapsedTime);
-
+            sceneSubjects[0].VectorFlow.update(elapsedTime);
+            sceneSubjects[0].Pressure.update(elapsedTime);
         renderer.render(scene, camera);
     }
 

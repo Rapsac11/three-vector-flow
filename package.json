@@ -47,7 +47,9 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "three": "^0.86.0",
-    "three-obj-loader": "^1.1.3"
+    "three-lut": "^79.0.1",
+    "three-obj-loader": "^1.1.3",
+    "three-orbitcontrols": "^2.1.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

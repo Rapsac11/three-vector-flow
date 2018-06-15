@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import SceneManager from '../SceneManager';
+import ComposeThreeElements from '../ComposeThreeElements';
 
-export default (container, objModel, vectorData) => {
+export default (container, objModel, vectorData, pressureData) => {
   const canvas = createCanvas(document, container);
-  const sceneManager = new SceneManager(canvas, objModel, vectorData);
+  const composeThreeElements = new ComposeThreeElements(canvas, objModel, vectorData, pressureData);
 
   let canvasHalfWidth;
   let canvasHalfHeight;
@@ -43,24 +43,24 @@ export default (container, objModel, vectorData) => {
       canvasHalfWidth = Math.round(canvas.offsetWidth/2);
       canvasHalfHeight = Math.round(canvas.offsetHeight/2);
 
-      sceneManager.onWindowResize()
+      composeThreeElements.onWindowResize()
   }
 
   function mouseMove({screenX, screenY}) {
-      sceneManager.onMouseMove(screenX-canvasHalfWidth, screenY-canvasHalfHeight);
+      composeThreeElements.onMouseMove(screenX-canvasHalfWidth, screenY-canvasHalfHeight);
   }
 
   function onClick(id){
       dispatchEvent(id, 'BuildingModel')
   }
 
-  function render(time) {
-      requestAnimationFrame(render);
-      sceneManager.update();
+  function dispatchEvent(content, threeElement) {
+    composeThreeElements.passEventToThreeElement(content, threeElement)
   }
 
-  function dispatchEvent(content, threeElement) {
-    sceneManager.passEventToThreeElement(content, threeElement)
+  function render(time) {
+      requestAnimationFrame(render);
+      composeThreeElements.update();
   }
 
   return {

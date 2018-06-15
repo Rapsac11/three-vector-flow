@@ -10,7 +10,8 @@ class Wrapper extends Component {
     this.state = {
       modelData: {
         obj: 'https://s3-ap-southeast-2.amazonaws.com/three.json.zonemodel/internalheatloads.obj',
-        vector: 'https://s3-ap-southeast-2.amazonaws.com/three.json.zonemodel/VectorFlow.json'
+        vector: 'https://s3-ap-southeast-2.amazonaws.com/three.json.zonemodel/VectorFlow.json',
+        pressure: 'https://s3-ap-southeast-2.amazonaws.com/three.json.zonemodel/pressures.json',
       },
       layers: null
     }
@@ -20,22 +21,22 @@ class Wrapper extends Component {
       Promise.all(
           [
             fetch(this.state.modelData.vector).then(r => r.json()),
-            loadObj(this.state.modelData.obj)
+            loadObj(this.state.modelData.obj),
+            fetch(this.state.modelData.pressure).then(r => r.json())
           ]
         )
         .then(
           //for some reason calling this.setState after threeRootComponent() will prevent canvas from rendering hence the chained promise
-          ([vectorData, objModel]) => {
+          ([vectorData, objModel, pressureData]) => {
             this.setState({
               layers: [...objModel.children]
             })
-            console.log(objModel)
-            return [vectorData, objModel]
+            return [vectorData, objModel, pressureData]
           }
         )
         .then(
-          ([vectorData, objModel]) => {
-            threeRootComponent(this.threeRootElement, objModel, vectorData, this.state.layers)
+          ([vectorData, objModel, pressureData]) => {
+            threeRootComponent(this.threeRootElement, objModel, vectorData, pressureData, this.state.layers)
           }
         )
       .catch(e => console.error(e));

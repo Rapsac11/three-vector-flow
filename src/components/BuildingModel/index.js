@@ -4,10 +4,10 @@ export default (scene, objModel) => {
 
     let dataSet = objModel
     dataSet.rotation.x = Math.PI * 1.5;
-    dataSet.rotation.y = Math.PI ;
-    dataSet.position.z += 26
-    dataSet.position.x += 6
-    dataSet.position.y += 3
+    //dataSet.rotation.y = Math.PI ;
+    dataSet.position.z += 25
+    //dataSet.position.x += 6
+    //dataSet.position.y += 3
     scene.add(dataSet)
 
     function onToggle(layer) {

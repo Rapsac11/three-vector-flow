@@ -1,7 +1,36 @@
-import { combineReducers } from 'redux'
+import * as THREE from 'three'
 
-import { modelLoaderReducer } from 'react-three-model-loader'
+export const LOAD_MODEL = 'LOAD_MODEL'
 
-export default combineReducers({
-  modelLoaderReducer
-})
+export const loadModel = (url, name) => dispatch => {
+  let loader = new THREE.JSONLoader();
+  loader.load(url, function ( geometry ) {
+    var loadedObject = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial({
+        vertexColors : THREE.FaceColors,
+    }));
+    console.log(loadedObject)
+    dispatch({
+      type: LOAD_MODEL,
+      payload: [loadedObject, name]
+    })
+  })
+}
+
+
+const initialState = {
+  loadedObject: null
+}
+
+export default function (state = initialState, {type, payload}) {
+  switch (type) {
+    case LOAD_MODEL: {
+      return {
+        ...state,
+        loadedObject: {...state.loadedObject, [payload['1']]: payload['0']}
+
+      }
+    }
+    default:
+      return state
+  }
+}
