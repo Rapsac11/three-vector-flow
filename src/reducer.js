@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import {SET_TIME} from './actions.js'
 
 export const LOAD_MODEL = 'LOAD_MODEL'
 
@@ -18,16 +19,16 @@ export const loadModel = (url, name) => dispatch => {
 
 
 const initialState = {
-  loadedObject: null
+  loadedObject: null,
+  setTime: 2,
 }
 
 export default function (state = initialState, {type, payload}) {
   switch (type) {
-    case LOAD_MODEL: {
+    case SET_TIME: {
       return {
         ...state,
-        loadedObject: {...state.loadedObject, [payload['1']]: payload['0']}
-
+        setTimer: payload
       }
     }
     default:

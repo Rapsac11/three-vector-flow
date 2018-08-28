@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import OBJLoader from 'three-obj-loader';
 OBJLoader(THREE);
 
+export const SET_TIME = "SET_TIME"
+
 export const loadObj = (url) => {
   let loader = new THREE.OBJLoader();
   var loadedObject = "";
@@ -40,3 +42,8 @@ export const loadJson = (url, name) => {
     })
   })
 }
+
+export const setTimer = time => ({
+      type: 'SET_TIME',
+      payload: time
+})

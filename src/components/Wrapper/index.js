@@ -13,8 +13,14 @@ class Wrapper extends Component {
         vector: 'https://s3-ap-southeast-2.amazonaws.com/three.json.zonemodel/VectorFlow.json',
         pressure: 'https://s3-ap-southeast-2.amazonaws.com/three.json.zonemodel/pressures.json',
       },
-      layers: null
+      layers: null,
+      number: 10
     }
+    this.getNum = this.getNum.bind(this)
+  }
+
+  getNum(number){
+    return(1)
   }
 
   componentDidMount() {
@@ -36,7 +42,7 @@ class Wrapper extends Component {
         )
         .then(
           ([vectorData, objModel, pressureData]) => {
-            threeRootComponent(this.threeRootElement, objModel, vectorData, pressureData, this.state.layers)
+            threeRootComponent(this.threeRootElement, objModel, vectorData, pressureData, this.state.layers, this.getNum)
           }
         )
       .catch(e => console.error(e));

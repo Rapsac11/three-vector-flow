@@ -64,9 +64,7 @@ export default (canvas, objModel, vectorData, pressureData) => {
         return sceneSubjects;
     }
 
-    function update() {
-        const elapsedTime = clock.getElapsedTime();
-
+    function update(elapsedTime) {
         for(let i=0; i<sceneSubjects.length; i++)
             sceneSubjects[0].VectorFlow.update(elapsedTime);
             sceneSubjects[0].Pressure.update(elapsedTime);

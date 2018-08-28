@@ -20,7 +20,9 @@ import thunk from 'redux-thunk'
 export const history = createHistory()
 const middleWare = [thunk, routerMiddleware(history)]
 
-let store = applyMiddleware(...middleWare)(createStore)(reducer)
+let store = applyMiddleware(...middleWare)(createStore)(reducer);
+
+export default store
 
 
 

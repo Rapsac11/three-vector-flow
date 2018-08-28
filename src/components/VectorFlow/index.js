@@ -25,8 +25,8 @@ export default (scene, vectorData) => {
 
     function update(time) {
       if(vectorData) {
-        let time2 = performance.now() / (10);
-        let increment = Math.abs(time2 % (vectorData[0].timesteps.length-1))
+        let rate = 50
+        let increment = Math.abs(time*rate % (vectorData[0].timesteps.length-1))
         let step = increment.toFixed(0)
         vectorProbeGroup.traverse( function ( child ) {
           if ( child.type == "Line" ) {

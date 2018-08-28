@@ -1,9 +1,18 @@
 import React, { Component } from 'react'
+import * as THREE from 'three';
+import { connect } from 'react-redux'
+import store from '../../index.js'
+import { setTimer } from '../../actions.js'
 import ComposeThreeElements from '../ComposeThreeElements';
 
-export default (container, objModel, vectorData, pressureData) => {
+export default (container, objModel, vectorData, pressureData, layers, getNum) => {
+
+  const clock = new THREE.Clock();
+  let timeAtClockStart = clock.getElapsedTime();
   const canvas = createCanvas(document, container);
   const composeThreeElements = new ComposeThreeElements(canvas, objModel, vectorData, pressureData);
+  let paused = true
+  let step = 0
 
   let canvasHalfWidth;
   let canvasHalfHeight;
@@ -59,9 +68,18 @@ export default (container, objModel, vectorData, pressureData) => {
   }
 
   function render(time) {
+      const testPauseClock = clock.getElapsedTime();
+      let rate = 50
+      let increment = Math.abs(testPauseClock*rate % (300))
+      paused ? null: step = increment.toFixed(0)
+      //console.log(step)
+
+      const elapsedTime = clock.getElapsedTime();
       requestAnimationFrame(render);
-      composeThreeElements.update();
+      composeThreeElements.update(elapsedTime);
   }
+
+  console.log(store.dispatch(setTimer(3)))
 
   return {
     dispatchEvent
